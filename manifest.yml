@@ -1,0 +1,10 @@
+---
+applications:
+- path: target/WatsonTranslateApp.war
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: jazzbot-translate-app-test
+  host: jazzbot-translate-app-test
+  disk_quota: 1024M
+  buildpack: liberty-for-java
