@@ -25,23 +25,30 @@ public class Translate extends HttpServlet {
 		String sessionId = request.getParameter("sessionId");
 		String text = request.getParameter("text");
 		 
-		JsonObject credConfig = Set.settingMap.get(sessionId);
-		
-		JsonObject output = new JsonObject();
+		JsonObject credConfig = Set.settingMap.get(sessionId)==null?new JsonObject():Set.settingMap.get(sessionId);
+		String output = "";
 		
 		try {
 			LanguageTranslator service = new LanguageTranslator();
-			service.setUsernameAndPassword(credConfig.get("username").getAsString(), credConfig.get("password").getAsString());
+			service.setUsernameAndPassword(
+					credConfig.get("username")==null?"":credConfig.get("username").getAsString(), 
+					credConfig.get("password")==null?"":credConfig.get("password").getAsString());
+			
+			service.setEndPoint(credConfig.get("endpoint")==null?"https://watson-api-explorer.mybluemix.net/language-translation/api":credConfig.get("endpoint").getAsString());
 			
 			TranslationResult translationResult = service.translate(text,
-					Language.valueOf(credConfig.get("from").getAsString().toUpperCase()), Language.valueOf(credConfig.get("to").getAsString().toUpperCase())).execute();
+					Language.valueOf(credConfig.get("from").getAsString().toUpperCase()), 
+					Language.valueOf(credConfig.get("to").getAsString().toUpperCase())).execute();
 			
-	        output = new JsonParser().parse(translationResult.toString()).getAsJsonObject();
+	        JsonObject rawOutput = new JsonParser().parse(translationResult.toString()).getAsJsonObject();
+	        System.out.println("cheok: " + rawOutput);
+	        output = rawOutput.get("translations").getAsJsonArray().get(0).getAsJsonObject().get("translation").getAsString();
+	        System.out.println("output: " + output);
 		} catch (Exception e) {
-			output.addProperty("err", e.getMessage());
+			output = e.getMessage();
 		}
 		
-    	response.setContentType("application/json");
+    	response.setContentType("html/text");
 		PrintWriter out = response.getWriter();
 		
 		out.println(output);

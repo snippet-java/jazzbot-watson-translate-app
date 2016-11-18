@@ -19,7 +19,12 @@ public class Help extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
 		JsonArray output = new JsonArray();
-		output.add("reverse <ANY_TEXT> - Return the reverse of inputted text");
+		output.add("set username <USERNAME> - set the username of translator service");
+		output.add("set password <PASSWORD> - set the password of translator service");
+		output.add("set endpoint <ENDPOINT> - set the endpoint of translator service");
+		output.add("set from <LANGUAGE> - set the language to translate from (e.g English, Spanish, French, Italian, Portuguese)");
+		output.add("set to <LANGUAGE> - set the language to translate to");
+		output.add("translate <TEXT> - return the translation result");
     	
     	response.setContentType("application/json");
 		PrintWriter out = response.getWriter();

@@ -27,15 +27,21 @@ public class Set extends HttpServlet {
 		String password = request.getParameter("password");
 		String from = request.getParameter("from");
 		String to = request.getParameter("to");
+		String endpoint = request.getParameter("endpoint");
 		
-		JsonObject configCred = new JsonObject();
-		configCred.addProperty("username", "".equals(username)?"":username);
-		configCred.addProperty("password", "".equals(password)?"":password);
-		configCred.addProperty("from", "".equals(from)?"":from);
-		configCred.addProperty("to", "".equals(to)?"":to);
+		JsonObject configCred = settingMap.get(sessionId) == null?new JsonObject():settingMap.get(sessionId);
+		if(username != null)
+			configCred.addProperty("username", username);
+		if(password != null)
+			configCred.addProperty("password", password);
+		if(from != null)
+			configCred.addProperty("from", from);
+		if(to != null)
+			configCred.addProperty("to", to);
+		if(endpoint != null)
+			configCred.addProperty("endpoint", endpoint);
     	
 		settingMap.put(sessionId, configCred);
-		
 		String output = "SET operation successful";
 		
     	response.setContentType("text/html");
