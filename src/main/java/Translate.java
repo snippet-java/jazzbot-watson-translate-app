@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.ibm.watson.developer_cloud.language_translator.v2.LanguageTranslator;
-import com.ibm.watson.developer_cloud.language_translator.v2.model.Language;
-import com.ibm.watson.developer_cloud.language_translator.v2.model.TranslationResult;
+import com.ibm.watson.developer_cloud.language_translation.v2.LanguageTranslation;
+import com.ibm.watson.developer_cloud.language_translation.v2.model.Language;
+import com.ibm.watson.developer_cloud.language_translation.v2.model.TranslationResult;
 
 @WebServlet("/translate")
 public class Translate extends HttpServlet {
@@ -57,7 +57,7 @@ public class Translate extends HttpServlet {
 		String output = "";
 			
 		try {
-			LanguageTranslator service = new LanguageTranslator();
+			LanguageTranslation service = new LanguageTranslation();
 			service.setUsernameAndPassword(
 					credConfig.get("username")==null?"":credConfig.get("username").getAsString(), 
 					credConfig.get("password")==null?"":credConfig.get("password").getAsString());
